@@ -1,38 +1,8 @@
-# Welcome to Remix!
+# RouteScanner – Assessment
 
-- [Remix Docs](https://remix.run/docs)
+## Instructions:
+1. `npm install`
+2. `npx prisma generate` in case you want to generate the Prisma types
 
-## Development
-
-From your terminal:
-
-```sh
-npm run dev
-```
-
-This starts your app in development mode, rebuilding assets on file changes.
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`
+## Notes
+I used Prisma with SQLite as the database for this demo. To make it easier to run the project, I included the SQLite database file in the repository. The database file is located at `prisma/dev.db`. Obviously, in a real-world scenario, you would not include the database file in the repository.

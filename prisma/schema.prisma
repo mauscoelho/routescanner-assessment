@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+
+  // Normally this would be an environment variable, but as the DB is included in the repo, it's hardcoded
+  url      = "file:./dev.db"
+}
+
+model Transaction {
+  // Rename the table to "transactions"
+  @@map(name: "transactions")
+
+  id                  String      @id @default(uuid())
+  description         String
+  date                DateTime
+  amount              Float
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
