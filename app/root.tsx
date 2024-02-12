@@ -1,5 +1,5 @@
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction } from '@remix-run/node';
+import { ActionFunctionArgs, LinksFunction, redirect } from '@remix-run/node';
 import {
   Links,
   LiveReload,
@@ -25,12 +25,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div className="bg-white dark:bg-slate-800 h-screen">
-          <Outlet />
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </div>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
       </body>
     </html>
   );
