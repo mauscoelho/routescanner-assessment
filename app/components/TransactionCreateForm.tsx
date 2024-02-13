@@ -1,27 +1,24 @@
-import { useFetcher } from '@remix-run/react';
-import { useEffect, useRef } from 'react';
+import { useFetcher } from "@remix-run/react";
+import { useEffect, useRef } from "react";
+import { action } from "~/routes/_index";
 
 export default function TransactionCreateForm() {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<typeof action>();
 
   const formRef = useRef<HTMLFormElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
 
-  const isCreating =
-    fetcher.state === 'submitting' &&
-    fetcher.formData?.get('_action') === 'create';
-
-  // After creating a transaction, we clear the inputs & focus back to the description field
+  // If the action returns a successful response, reset the form and focus the description input
   useEffect(() => {
-    if (!isCreating) {
+    if (fetcher.state === "idle" && fetcher.data?.ok) {
       formRef.current?.reset();
       descriptionRef.current?.focus();
     }
-  }, [isCreating]);
+  }, [fetcher.state, fetcher.data?.ok]);
 
   return (
     <div>
-      <h2 className="font-bold text-xl text-emerald-900">Add a transaction</h2>
+      <h2 className="text-xl font-bold text-emerald-900">Add a transaction</h2>
 
       <div className="mt-4">
         <fetcher.Form
@@ -30,7 +27,10 @@ export default function TransactionCreateForm() {
           className="grid grid-cols-8 gap-x-3 gap-y-5"
         >
           <div className="col-span-8">
-            <label htmlFor="description" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium leading-6"
+            >
               Description
             </label>
 
@@ -40,13 +40,16 @@ export default function TransactionCreateForm() {
                 ref={descriptionRef}
                 type="text"
                 name="description"
-                className="rounded w-full focus:ring-emerald-500 focus:ring-2 focus:border-white"
+                className="w-full rounded focus:border-white focus:ring-2 focus:ring-emerald-500"
               />
             </div>
           </div>
 
           <div className="col-span-3">
-            <label htmlFor="description" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium leading-6"
+            >
               Date
             </label>
 
@@ -56,13 +59,16 @@ export default function TransactionCreateForm() {
                 type="date"
                 placeholder="Date"
                 name="date"
-                className="rounded w-full focus:ring-emerald-500 focus:ring-2 focus:border-white"
+                className="w-full rounded focus:border-white focus:ring-2 focus:ring-emerald-500"
               />
             </div>
           </div>
 
           <div className="col-span-3">
-            <label htmlFor="description" className="block text-sm font-medium leading-6">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium leading-6"
+            >
               Amount *
             </label>
 
@@ -74,7 +80,7 @@ export default function TransactionCreateForm() {
                 // Using type="number" is problematic in some browsers because it does not allow for negative numbers / decimals
                 // Using pattern to enforce a number with optional negative sign and decimal
                 pattern="^[\-+]?[0-9]*.?[0-9]+$"
-                className="rounded w-full text-right focus:ring-emerald-500 focus:ring-2 focus:border-white"
+                className="w-full rounded text-right focus:border-white focus:ring-2 focus:ring-emerald-500"
               />
             </div>
           </div>
@@ -84,14 +90,15 @@ export default function TransactionCreateForm() {
               type="submit"
               name="_action"
               value="create"
-              className="rounded-md bg-emerald-400 w-full h-[42px] py-2.5 text-sm font-semibold text-emerald-900 shadow-sm hover:bg-emerald-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 transition ease-in-out"
+              className="h-[42px] w-full rounded-md bg-emerald-400 py-2.5 text-sm font-semibold text-emerald-900 shadow-sm transition ease-in-out hover:bg-emerald-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
             >
               Save
             </button>
           </div>
 
-          <div className="col-span-8 text-sm text-gray-400 border-t pt-3">
-            * Use a dot (.) as the decimal separator. Positive (income) and negative (expense) amounts are both allowed.
+          <div className="col-span-8 border-t pt-3 text-sm text-gray-400">
+            * Use a dot (.) as the decimal separator. Positive (income) and
+            negative (expense) amounts are both allowed.
           </div>
         </fetcher.Form>
       </div>
