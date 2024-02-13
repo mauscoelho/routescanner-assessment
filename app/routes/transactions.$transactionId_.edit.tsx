@@ -5,9 +5,8 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import invariant from "tiny-invariant";
-import TransactionCreateForm from "~/components/TransactionCreateForm";
 import {
   getTransactionById,
   updateTransaction,
@@ -39,6 +38,7 @@ export default function EditTransaction() {
 
   const { transaction } = useLoaderData<typeof loader>();
 
+  // Nothing wrong with using a useMemo here, but it's not necessary
   const formattedDate = transaction
     ? new Date(transaction.date).toISOString().split("T")[0]
     : "";
